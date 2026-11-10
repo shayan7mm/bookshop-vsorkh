@@ -19,22 +19,10 @@ class ShopController extends Controller
                   ->orWhere('author', 'like', "%{$q}%");
             });
         }
-
-        if ($request->filled('category')) {
-            $query->where('category_id', $request->input('category'));
-        }
-
-        if ($request->filled('publisher')) {
-            $query->where('publisher_id', $request->input('publisher'));
-        }
-
-        if ($request->filled('type')) {
-            $query->where('type', $request->input('type'));
-        }
-
-        if ($request->filled('sale')) {
-            $query->whereNotNull('old_price');
-        }
+        if ($request->filled('category'))  $query->where('category_id', $request->category);
+        if ($request->filled('publisher')) $query->where('publisher_id', $request->publisher);
+        if ($request->filled('type'))      $query->where('type', $request->type);
+        if ($request->filled('sale'))      $query->whereNotNull('old_price');
 
         $books = $query->orderBy('id')->paginate(12)->withQueryString();
 
@@ -49,9 +37,7 @@ class ShopController extends Controller
     public function deals()
     {
         $books = Book::with(['category','publisher'])
-            ->whereNotNull('old_price')
-            ->orderBy('id')
-            ->paginate(12);
+            ->whereNotNull('old_price')->orderBy('id')->paginate(12);
 
         return view('shop.index', [
             'books'      => $books,
@@ -66,9 +52,7 @@ class ShopController extends Controller
     public function audiobooks()
     {
         $books = Book::with(['category','publisher'])
-            ->where('type', 'a')
-            ->orderBy('id')
-            ->paginate(12);
+            ->where('type', 'a')->orderBy('id')->paginate(12);
 
         return view('shop.index', [
             'books'      => $books,
