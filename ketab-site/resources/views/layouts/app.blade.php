@@ -5,11 +5,13 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <title>@yield('title', 'کاغذوسرخ | فروشگاه آنلاین کتاب')</title>
-<style>html{visibility:hidden}html.loaded{visibility:visible}</style>
+
+<link rel="preload" href="/fonts/YekanBakh-Regular.ttf" as="font" type="font/ttf" crossorigin>
+
 <style>
-@font-face{font-family:"Yekan Bakh";src:local("Yekan Bakh Regular"),local("YekanBakh-Regular"),url(fonts/YekanBakh-Regular.woff2) format("woff2");font-weight:400;font-display:swap}
-@font-face{font-family:"Yekan Bakh";src:local("Yekan Bakh SemiBold"),local("YekanBakh-SemiBold"),url(fonts/YekanBakh-SemiBold.woff2) format("woff2");font-weight:500;font-display:swap}
-@font-face{font-family:"Yekan Bakh";src:local("Yekan Bakh SemiBold"),local("YekanBakh-SemiBold"),url(fonts/YekanBakh-SemiBold.woff2) format("woff2");font-weight:600;font-display:swap}
+@font-face{font-family:"Yekan Bakh";src:local("Yekan Bakh Regular"),local("YekanBakh-Regular"),url(/fonts/YekanBakh-Regular.ttf) format("truetype");font-weight:400;font-display:swap}
+@font-face{font-family:"Yekan Bakh";src:local("Yekan Bakh Regular"),local("YekanBakh-Regular"),url(/fonts/YekanBakh-Regular.ttf) format("truetype");font-weight:500;font-display:swap}
+@font-face{font-family:"Yekan Bakh";src:local("Yekan Bakh Regular"),local("YekanBakh-Regular"),url(/fonts/YekanBakh-Regular.ttf) format("truetype");font-weight:600;font-display:swap}
 :root{--fw:500;--fwh:600;--bg:#f8f6f2;--bg2:#efeae2;--card:#ffffff;--ink:#26231f;--mut:#79736b;--line:#26231f1a;--red:#ff1f3d;--gold:#9a7a46;--vio:#6b6a80;--r:22px}
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
@@ -88,21 +90,31 @@ footer{background:var(--bg2);border-top:1px solid var(--line);padding:56px 0 0}
 @media(max-width:1024px){.ft{grid-template-columns:1fr 1fr}}
 @media(max-width:900px){.nav{gap:10px}.logo{font-size:1.15rem}section{padding:56px 0}.sb{max-width:none}}
 @media(max-width:700px){.grid{grid-template-columns:repeat(2,1fr);gap:24px 16px}.info h3{font-size:.92rem}.pr{flex-direction:column;align-items:flex-start;gap:6px}.add{width:100%;text-align:center}}
-@media(max-width:640px){.nav{height:62px;gap:8px}.logo{font-size:1rem}.logo:before{width:10px;height:10px}.sb input{padding:10px 16px 10px 78px;font-size:.85rem}.sb button{padding:0 14px;font-size:.78rem}.cart{padding:8px 12px;font-size:.82rem}.cart em{padding:1px 6px;font-size:.7rem;margin-right:4px}.ft{grid-template-columns:1fr;gap:28px}}
-@media(max-width:420px){.grid{grid-template-columns:1fr}.nav{gap:6px;height:56px}.logo{font-size:.9rem}.sb button{padding:0 10px;font-size:.72rem}.sb input{padding:9px 12px 9px 68px;font-size:.78rem}.cart{padding:7px 10px;font-size:.76rem}.cart em{display:none}}
-@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 @media(max-width:640px){
   .nav{flex-wrap:wrap;height:auto;padding:10px 0;gap:8px}
-  .nav .logo{order:1}
-  .nav .cart{order:2;margin-right:auto}
+  .nav .logo{order:1;font-size:1rem}
+  .nav .logo:before{width:10px;height:10px}
+  .nav .cart{order:2;margin-right:auto;padding:8px 12px;font-size:.82rem}
+  .nav .cart em{padding:1px 6px;font-size:.7rem;margin-right:4px}
   .nav .sb{order:3;flex:1 1 100%;max-width:none;margin:6px 0 0}
+  .nav .sb input{padding:10px 16px 10px 70px;font-size:.85rem}
+  .nav .sb button{padding:0 12px;font-size:.78rem}
   .nav form[action*="logout"],
   .nav > a[href*="orders"],
   .nav > a[href*="login"]{order:4;flex:0 0 auto}
-  .nav .sb input{padding:10px 16px 10px 70px;font-size:.85rem}
-  .nav .sb button{padding:0 12px;font-size:.78rem}
+  .ft{grid-template-columns:1fr;gap:28px}
 }
-html, body{overflow-x:clip}
+@media(max-width:420px){
+  .grid{grid-template-columns:1fr}
+  .nav{gap:6px;height:auto}
+  .logo{font-size:.9rem}
+  .sb button{padding:0 10px;font-size:.72rem}
+  .sb input{padding:9px 12px 9px 68px;font-size:.78rem}
+  .cart{padding:7px 10px;font-size:.76rem}
+  .cart em{display:none}
+}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+html,body{overflow-x:clip}
 body{overscroll-behavior-x:none}
 </style>
 @stack('styles')
@@ -118,16 +130,16 @@ body{overscroll-behavior-x:none}
     </form>
     <a class="cart" href="{{ route('cart') }}" id="cart">سبد خرید<em id="cnt">{{ \App\Services\CartService::count() ?: '۰' }}</em></a>
     @auth
-  <div style="position:relative;display:flex;align-items:center;gap:6px">
-    <a href="{{ route('orders') }}" style="font-size:.82rem;color:var(--mut);white-space:nowrap;padding:8px 10px">سفارش‌های من</a>
-    <form method="POST" action="{{ route('logout') }}" style="margin:0">
-      @csrf
-      <button type="submit" style="padding:10px 16px;border-radius:99px;background:var(--bg2);color:var(--ink);font-size:.82rem;font-weight:600;white-space:nowrap">خروج</button>
-    </form>
-  </div>
-@else
-  <a href="{{ route('login') }}" style="padding:10px 18px;border-radius:99px;background:var(--bg2);color:var(--ink);font-size:.85rem;font-weight:600;white-space:nowrap">ورود / ثبت‌نام</a>
-@endauth
+      <div style="position:relative;display:flex;align-items:center;gap:6px">
+        <a href="{{ route('orders') }}" style="font-size:.82rem;color:var(--mut);white-space:nowrap;padding:8px 10px">سفارش‌های من</a>
+        <form method="POST" action="{{ route('logout') }}" style="margin:0">
+          @csrf
+          <button type="submit" style="padding:10px 16px;border-radius:99px;background:var(--bg2);color:var(--ink);font-size:.82rem;font-weight:600;white-space:nowrap">خروج</button>
+        </form>
+      </div>
+    @else
+      <a href="{{ route('login') }}" style="padding:10px 18px;border-radius:99px;background:var(--bg2);color:var(--ink);font-size:.85rem;font-weight:600;white-space:nowrap">ورود / ثبت‌نام</a>
+    @endauth
   </div>
   <nav class="wrap links">
     <a href="{{ route('shop') }}">فروشگاه</a>
@@ -199,10 +211,6 @@ document.addEventListener("click", async (e)=>{
     window.toast("خطا در افزودن به سبد");
   }
 });
-</script>
-<script>
-document.documentElement.classList.add('loaded');
-setTimeout(()=>document.documentElement.classList.add('loaded'), 800);
 </script>
 @stack('scripts')
 </body>

@@ -130,6 +130,11 @@ details p{color:var(--mut);padding-bottom:18px;font-size:.9rem}
 @media(max-width:900px){.hero .wrap,.aud{grid-template-columns:1fr;gap:36px}.stage{height:360px}.stats,.cats{grid-template-columns:repeat(2,1fr)}.col,.mg,.rv{grid-template-columns:1fr}.bnr{grid-template-columns:1fr}.bnr .ph{order:-1;min-height:220px}.bnr .bn-txt{padding:30px 26px}.deal{padding:26px}}
 @media(max-width:640px){h1{font-size:clamp(1.7rem,7vw,2.4rem)}.hero{padding:32px 0 24px}.hero p{font-size:.95rem}.btn{padding:12px 22px;font-size:.88rem}.stage{height:300px}.stage .cv:nth-child(1){width:130px;top:60px;right:2%}.stage .cv:nth-child(2){width:150px;right:32%}.stage .cv:nth-child(3){width:130px;top:80px;right:62%}.stats{gap:10px}.stat{padding:16px 10px}.deal{padding:22px 18px;text-align:center;justify-content:center}.cd{justify-content:center;width:100%}.cd div{width:66px;padding:10px 0}.cd b{font-size:1.35rem}.cd span{font-size:.62rem}.bnr .bn-txt{padding:24px 20px}.bnr .ph{min-height:180px}.pl{padding:16px;gap:12px}.pl .cv{width:80px}.nl form{flex-direction:column}.nl input{width:100%}.nl .btn{width:100%}}
 @media(max-width:420px){.stats,.cats{grid-template-columns:1fr}.pubs{grid-template-columns:repeat(2,1fr)}}
+/* ===== FIX: mobile lazy load ===== */
+@media(max-width:900px){
+  .rev{opacity:1!important;transform:none!important;transition:none!important}
+  .bk img,.cv img,.ph img{content-visibility:visible}
+}
 </style>
 @endpush
 
@@ -146,7 +151,7 @@ details p{color:var(--mut);padding-bottom:18px;font-size:.9rem}
     @foreach($heroBooks as $hb)
       <div class="cv">
         <span class="sz"><em>۶۰۰ × ۹۰۰</em>جای عکس جلد</span>
-        <img src="{{ asset($hb->image) }}" alt="{{ $hb->title }}" width="600" height="900" loading="lazy" onerror="this.remove()">
+        <img src="{{ asset($hb->image) }}" alt="{{ $hb->title }}" width="600" height="900" loading="eager" onerror="this.remove()">
       </div>
     @endforeach
   </div>
@@ -189,7 +194,7 @@ details p{color:var(--mut);padding-bottom:18px;font-size:.9rem}
           <div class="cv">
             @if($book->tag)<span class="tag">{{ $book->tag }}</span>@endif
             <span class="sz"><em>۶۰۰ × ۹۰۰</em>جای عکس جلد</span>
-            <img src="{{ asset($book->image) }}" alt="{{ $book->title }}" width="600" height="900" loading="lazy" onerror="this.remove()">
+            <img src="{{ asset($book->image) }}" alt="{{ $book->title }}" width="600" height="900" loading="eager" onerror="this.remove()">
           </div>
         </a>
         <div class="info">
@@ -210,7 +215,7 @@ details p{color:var(--mut);padding-bottom:18px;font-size:.9rem}
   <div class="cats">
     @foreach($categories as $c)
       <a class="cat" style="--c:{{ $c->color }}" href="{{ route('shop', ['category'=>$c->id]) }}">
-        <div class="ph"><span class="sz"><em>۱۶۰×۱۶۰</em></span><img src="{{ asset($c->image) }}" alt="{{ $c->name }}" width="160" height="160" loading="lazy" onerror="this.remove()"></div>
+        <div class="ph"><span class="sz"><em>۱۶۰×۱۶۰</em></span><img src="{{ asset($c->image) }}" alt="{{ $c->name }}" width="160" height="160" loading="eager" onerror="this.remove()"></div>
         <h3>{{ $c->name }}</h3><p>{{ $c->count_label }}</p>
       </a>
     @endforeach
